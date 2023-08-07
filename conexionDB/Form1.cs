@@ -27,9 +27,11 @@ namespace conexionDB
 
         private void dgvDiscos_SelectionChanged(object sender, EventArgs e)
         {
-            Disco seleccionado = new Disco();
-            seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
-            cargarImagen(seleccionado.UrlImagenTapa);
+            if (dgvDiscos.CurrentRow != null)
+            {
+                Disco seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
+                cargarImagen(seleccionado.UrlImagenTapa);
+            }
         }
 
         private void cargar()
@@ -38,11 +40,15 @@ namespace conexionDB
 
             listaDiscos = negocio.listar();
             dgvDiscos.DataSource = listaDiscos;
-            dgvDiscos.Columns["UrlImagenTapa"].Visible = false;
-            dgvDiscos.Columns["Id"].Visible = false;
+            ocultarColumnas();
 
 
             cargarImagen(listaDiscos[0].UrlImagenTapa);
+        }
+        private void ocultarColumnas()
+        {
+            dgvDiscos.Columns["UrlImagenTapa"].Visible = false;
+            dgvDiscos.Columns["Id"].Visible = false;
         }
 
         public void cargarImagen(string url)
@@ -84,6 +90,27 @@ namespace conexionDB
                 negocio.eliminar(seleccionado.Id);
                 cargar();
             }
-        }       
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtFiltro_TextChanged(object sender, EventArgs e)
+        {
+            List<Disco> filtrada;
+            string filtro = txtFiltro.Text;
+            if (filtro.Length >= 3)
+            {
+                filtrada = listaDiscos.FindAll(x => x.Titulo.ToUpper().Contains(filtro.ToUpper()) || x.Estilo.Descripcion.ToUpper().Contains(filtro.ToUpper()));
+                dgvDiscos.DataSource = null;
+                dgvDiscos.DataSource = filtrada;
+                ocultarColumnas();
+            }else if(filtro.Length == 0)
+            {
+                cargar();
+            }
+        }
     }
 }
