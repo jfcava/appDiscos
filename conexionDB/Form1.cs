@@ -39,6 +39,8 @@ namespace conexionDB
             listaDiscos = negocio.listar();
             dgvDiscos.DataSource = listaDiscos;
             dgvDiscos.Columns["UrlImagenTapa"].Visible = false;
+            dgvDiscos.Columns["Id"].Visible = false;
+
 
             cargarImagen(listaDiscos[0].UrlImagenTapa);
         }
@@ -64,11 +66,24 @@ namespace conexionDB
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            Disco seleccionado =(Disco)dgvDiscos.CurrentRow.DataBoundItem;
+            Disco seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
 
             frmNuevoDisco modificado = new frmNuevoDisco(seleccionado);
             modificado.ShowDialog();
             cargar();
         }
+
+        private void btnEliminarFisico_Click(object sender, EventArgs e)
+        {
+            DialogResult respuesta = MessageBox.Show("¿Estás seguro de eliminarlo?", "Eliminando...", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (respuesta == DialogResult.Yes)
+            {
+                DiscoNegocio negocio = new DiscoNegocio();
+                Disco seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
+
+                negocio.eliminar(seleccionado.Id);
+                cargar();
+            }
+        }       
     }
 }

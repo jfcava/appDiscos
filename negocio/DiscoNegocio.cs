@@ -21,7 +21,7 @@ namespace negocio
             {
                 conexion.ConnectionString = "server=.\\SQLEXPRESS;database = DISCOS_DB; integrated security=true";
                 comando.CommandType = CommandType.Text;
-                comando.CommandText = "select Titulo, FechaLanzamiento, CantidadCanciones, UrlImagenTapa, E.Descripcion Estilo, T.Descripcion TipoEdicion, D.IdEstilo, D.IdTipoEdicion from DISCOS D, ESTILOS E, TIPOSEDICION T where D.IdEstilo = E.Id And D.IdTipoEdicion = T.Id";
+                comando.CommandText = "select Titulo, FechaLanzamiento, CantidadCanciones, UrlImagenTapa, E.Descripcion Estilo, T.Descripcion TipoEdicion, D.IdEstilo, D.IdTipoEdicion, D.Id from DISCOS D, ESTILOS E, TIPOSEDICION T where D.IdEstilo = E.Id And D.IdTipoEdicion = T.Id";
                 comando.Connection = conexion;
 
                 conexion.Open();
@@ -30,6 +30,7 @@ namespace negocio
                 while(lector.Read())
                 {
                     Disco aux = new Disco();
+                    aux.Id = (int)lector["Id"];
                     aux.Titulo = (string)lector["Titulo"];
                     aux.FechaLanzamiento = (DateTime)lector["FechaLanzamiento"];
                     aux.CantidadCanciones = (int)lector["CantidadCanciones"];
@@ -81,7 +82,53 @@ namespace negocio
             }
               
 
-        } 
+        }
+        public void modificar(Disco disco)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("update DISCOS set Titulo = @titulo, FechaLanzamiento = @fechaLanza, CantidadCanciones = @cantCanciones, UrlImagenTapa = @urlImagen, IdEstilo=@idEstilo, IdTipoEdicion= @idEdicion where id=@id");
+                datos.setearParametros("@titulo", disco.Titulo);
+                datos.setearParametros("@fechaLanza", disco.FechaLanzamiento);
+                datos.setearParametros("@cantCanciones", disco.CantidadCanciones);
+                datos.setearParametros("@urlImagen", disco.UrlImagenTapa);
+                datos.setearParametros("@idEstilo", disco.Estilo.Id);
+                datos.setearParametros("@idEdicion", disco.TipoEdicion.Id);
+                datos.setearParametros("@id", disco.Id);
+
+                datos.ejecutarEscritura();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public void eliminar(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("delete from DISCOS where id=@id");
+                datos.setearParametros("id", id);
+
+                datos.ejecutarEscritura();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }        
 
     }
 }

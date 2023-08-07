@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Diagnostics.Contracts;
+using dominio;
 
 namespace negocio
 {
@@ -57,7 +59,7 @@ namespace negocio
                 throw ex;
             }
         }
-
+        
         public void setearParametros(string nombre, object valor)
         {
             comando.Parameters.AddWithValue(nombre, valor);

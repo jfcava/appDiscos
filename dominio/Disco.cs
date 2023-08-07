@@ -11,7 +11,7 @@ namespace dominio
     {
         // Esto se llama Annotations, sirve para que el titulo salga como quiero.
         // Se utiliza tambien para formato de fechas
-
+        public int Id { get; set; }
         [DisplayName("Título")]
         public string Titulo { get; set; }
         [DisplayName("Fecha de Lanzamiento")]

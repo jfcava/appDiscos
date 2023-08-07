@@ -14,7 +14,7 @@ namespace conexionDB
 {
     public partial class frmNuevoDisco : Form
     {
-        private Disco nuevo = null;
+        private Disco disco = null;
         public frmNuevoDisco()
         {
             InitializeComponent();
@@ -23,7 +23,7 @@ namespace conexionDB
         public frmNuevoDisco(Disco nuevo)
         {
             InitializeComponent();
-            this.nuevo = nuevo;
+            disco = nuevo;
             Text = "Modificar Disco";
         }
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -33,27 +33,39 @@ namespace conexionDB
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            Disco nuevoDisco = new Disco();
-            DiscoNegocio negocio = new DiscoNegocio();            
+
+            DiscoNegocio negocio = new DiscoNegocio();
 
             try
             {
-                nuevoDisco.Titulo = txtTitulo.Text;
-                nuevoDisco.FechaLanzamiento = dtpFechaLanzamiento.Value;
-                nuevoDisco.CantidadCanciones = int.Parse(txtCantidadCanciones.Text);
-                nuevoDisco.UrlImagenTapa = txtUrlImagen.Text;
-                nuevoDisco.Estilo = (Estilo)cbEstilo.SelectedItem;
-                nuevoDisco.TipoEdicion = (TipoEdicion)cboTipoEdicion.SelectedItem;
+                if (disco == null)
+                    disco = new Disco();
 
-                negocio.agregar(nuevoDisco);
-                MessageBox.Show("Agregado exitosamente.");
+                disco.Titulo = txtTitulo.Text;
+                disco.FechaLanzamiento = dtpFechaLanzamiento.Value;
+                disco.CantidadCanciones = int.Parse(txtCantidadCanciones.Text);
+                disco.UrlImagenTapa = txtUrlImagen.Text;
+                disco.Estilo = (Estilo)cbEstilo.SelectedItem;
+                disco.TipoEdicion = (TipoEdicion)cboTipoEdicion.SelectedItem;
+
+                if (disco.Id != 0)
+                {
+                    negocio.modificar(disco);
+                    MessageBox.Show("Modificado exitosamente.");
+                }
+                else
+                {
+                    negocio.agregar(disco);
+                    MessageBox.Show("Agregado exitosamente.");
+                }
+
                 Close();
 
             }
             catch (Exception ex)
             {
                 throw ex;
-            } 
+            }
         }
 
         private void frmNuevoDisco_Load(object sender, EventArgs e)
@@ -62,7 +74,7 @@ namespace conexionDB
             EdicionNegocio edicion = new EdicionNegocio();
 
             cbEstilo.DataSource = negocio.listar();
-            
+
             //PRECARGAR COMBOBOX CON DATOS DE UN OBJETO PARA MODIFICAR
             //Con valueMember y DisplayMember puedo darle un dato 'escondido' y se utiliza como (CLAVE), valuemember
             //Y un dato que quiero que se muestre, que en este caso es la descripcion. (VALOR)
@@ -72,21 +84,21 @@ namespace conexionDB
             cboTipoEdicion.ValueMember = "Id";
             cboTipoEdicion.DisplayMember = "Descripcion";
 
-            if(nuevo != null)
+            if (disco != null)
             {
-                txtTitulo.Text = nuevo.Titulo;
-                txtCantidadCanciones.Text = nuevo.CantidadCanciones.ToString();
-                txtUrlImagen.Text = nuevo.UrlImagenTapa;
-                cargarImagen(nuevo.UrlImagenTapa);
-                cbEstilo.SelectedValue = nuevo.Estilo.Id;
-                cboTipoEdicion.SelectedValue = nuevo.TipoEdicion.Id;
-                  
+                txtTitulo.Text = disco.Titulo;
+                txtCantidadCanciones.Text = disco.CantidadCanciones.ToString();
+                txtUrlImagen.Text = disco.UrlImagenTapa;
+                cargarImagen(disco.UrlImagenTapa);
+                cbEstilo.SelectedValue = disco.Estilo.Id;
+                cboTipoEdicion.SelectedValue = disco.TipoEdicion.Id;
+
             }
         }
 
         private void txtUrlImagen_Leave(object sender, EventArgs e)
         {
-            cargarImagen(txtUrlImagen.Text);    
+            cargarImagen(txtUrlImagen.Text);
         }
 
         private void cargarImagen(string url)
