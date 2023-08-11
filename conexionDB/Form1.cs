@@ -23,6 +23,9 @@ namespace conexionDB
         private void Form1_Load(object sender, EventArgs e)
         {
             cargar();
+            cboCampo.Items.Add("Titulo");
+            cboCampo.Items.Add("Estilo");
+            cboCampo.Items.Add("Nro Canciones");      
         }
 
         private void dgvDiscos_SelectionChanged(object sender, EventArgs e)
@@ -94,7 +97,20 @@ namespace conexionDB
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
+            DiscoNegocio negocio = new DiscoNegocio();
 
+            try
+            {
+                string campo = cboCampo.SelectedItem.ToString();
+                string criterio = cboCriterio.SelectedItem.ToString();
+                string filtro = txtFiltroAvanzado.Text;
+                dgvDiscos.DataSource = negocio.filtrar(campo, criterio, filtro);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         private void txtFiltro_TextChanged(object sender, EventArgs e)
@@ -110,6 +126,26 @@ namespace conexionDB
             }else if(filtro.Length == 0)
             {
                 cargar();
+            }
+        }
+
+        private void cboCampo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string opcion = cboCampo.SelectedItem.ToString();
+
+            if(opcion == "Nro Canciones")
+            {
+                cboCriterio.Items.Clear();
+                cboCriterio.Items.Add("Mayor a");
+                cboCriterio.Items.Add("Menor a");
+                cboCriterio.Items.Add("Igual a");
+            }else
+            {
+                cboCriterio.Items.Clear();
+                cboCriterio.Items.Add("Comienza con");
+                cboCriterio.Items.Add("Termina con");
+                cboCriterio.Items.Add("Contiene");
+
             }
         }
     }
