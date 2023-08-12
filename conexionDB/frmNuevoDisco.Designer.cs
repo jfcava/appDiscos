@@ -43,6 +43,7 @@
             this.pbNuevoDisco = new System.Windows.Forms.PictureBox();
             this.txtUrlImagen = new System.Windows.Forms.TextBox();
             this.lblUrlImagen = new System.Windows.Forms.Label();
+            this.btnAgregarImagen = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbNuevoDisco)).BeginInit();
             this.SuspendLayout();
             // 
@@ -152,7 +153,7 @@
             // 
             // pbNuevoDisco
             // 
-            this.pbNuevoDisco.Location = new System.Drawing.Point(349, 43);
+            this.pbNuevoDisco.Location = new System.Drawing.Point(378, 40);
             this.pbNuevoDisco.Name = "pbNuevoDisco";
             this.pbNuevoDisco.Size = new System.Drawing.Size(249, 231);
             this.pbNuevoDisco.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -176,11 +177,23 @@
             this.lblUrlImagen.TabIndex = 15;
             this.lblUrlImagen.Text = "Url Imagen:";
             // 
+            // btnAgregarImagen
+            // 
+            this.btnAgregarImagen.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgregarImagen.Location = new System.Drawing.Point(335, 138);
+            this.btnAgregarImagen.Name = "btnAgregarImagen";
+            this.btnAgregarImagen.Size = new System.Drawing.Size(37, 21);
+            this.btnAgregarImagen.TabIndex = 16;
+            this.btnAgregarImagen.Text = "+";
+            this.btnAgregarImagen.UseVisualStyleBackColor = true;
+            this.btnAgregarImagen.Click += new System.EventHandler(this.btnAgregarImagen_Click);
+            // 
             // frmNuevoDisco
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 294);
+            this.ClientSize = new System.Drawing.Size(651, 294);
+            this.Controls.Add(this.btnAgregarImagen);
             this.Controls.Add(this.lblUrlImagen);
             this.Controls.Add(this.txtUrlImagen);
             this.Controls.Add(this.pbNuevoDisco);
@@ -223,5 +236,6 @@
         private System.Windows.Forms.PictureBox pbNuevoDisco;
         private System.Windows.Forms.TextBox txtUrlImagen;
         private System.Windows.Forms.Label lblUrlImagen;
+        private System.Windows.Forms.Button btnAgregarImagen;
     }
 }

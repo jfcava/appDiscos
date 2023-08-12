@@ -161,13 +161,13 @@ namespace negocio
                         switch (criterio)
                         {
                             case "Comienza con":
-                                consulta += "Estilo like '" + filtro + "%'";
+                                consulta += "E.Descripcion like '" + filtro + "%'";
                                 break;
                             case "Termina con":
-                                consulta += "Estilo like '%" + filtro + "'";
+                                consulta += "E.Descripcion like '%" + filtro + "'";
                                 break;
                             case "Contiene":
-                                consulta += "Estilo like '%" + filtro + "%'";
+                                consulta += "E.Descripcion like '%" + filtro + "%'";
                                 break;
                             default:
                                 break;
@@ -177,11 +177,13 @@ namespace negocio
                         switch (criterio)
                         {
                             case "Mayor a":
-                                consulta += " like '%" + filtro + "%'";
+                                consulta += "CantidadCanciones > " + filtro;
                                 break;
                             case "Menor a":
+                                consulta += "CantidadCanciones < " + filtro;
                                 break;
                             case "Igual a":
+                                consulta += "CantidadCanciones = " + filtro;
                                 break;
                             default:
                                 break;

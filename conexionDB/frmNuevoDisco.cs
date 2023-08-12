@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using negocio;
+using System.IO;
+using System.Configuration;
 
 namespace conexionDB
 {
@@ -110,6 +112,25 @@ namespace conexionDB
             catch (Exception)
             {
                 pbNuevoDisco.Load("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png");
+            }
+        }
+
+        private void btnAgregarImagen_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog archivo = new OpenFileDialog();
+            archivo.Filter = "jpg|*.jpg|png|*.png";
+            if(archivo.ShowDialog() == DialogResult.OK)
+            {
+                txtUrlImagen.Text = archivo.FileName;
+                cargarImagen(archivo.FileName);
+
+                //Guardo la imagen que cargo, y la guardo en otra carpeta.
+                //Para utilizar la clase File se debe usar el using System.IO
+
+                //Para utilizar las configuracion creadas en App.config,
+                //debo agregar la referencia System.Configuration dentro de Assemblies
+
+                //File.Copy(archivo.FileName, ConfigurationManager.AppSettings["carpeta-imagen"] + )
             }
         }
     }
