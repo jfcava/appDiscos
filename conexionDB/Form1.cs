@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace conexionDB
             cargar();
             cboCampo.Items.Add("Titulo");
             cboCampo.Items.Add("Estilo");
-            cboCampo.Items.Add("Nro Canciones");      
+            cboCampo.Items.Add("Nro Canciones");
         }
 
         private void dgvDiscos_SelectionChanged(object sender, EventArgs e)
@@ -94,6 +95,43 @@ namespace conexionDB
                 cargar();
             }
         }
+        private bool validarFiltro()
+        {
+            //Valido si el comboBox de Campo, tiene algo seleccionado
+            //Sin seleccion, los ComboBox tienen indice -1.
+
+            if (cboCampo.SelectedIndex < 0)
+            {
+                MessageBox.Show("Por favor, seleccioná un campo para buscar.");
+                return true;
+            }
+
+            if (cboCriterio.SelectedIndex < 0)
+            {
+                MessageBox.Show("Por favor, seleccioná un criterio para buscar.");
+                return true;
+            }
+
+            if (cboCampo.SelectedItem.ToString() == "Nro Canciones")
+            {
+                if (!(soloNumeros(txtFiltroAvanzado.Text)))
+                {
+                    MessageBox.Show("Por favor, ingresa solo números para filtrar.");
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool soloNumeros(string filtro)
+        {
+            foreach (char caracter in filtro)
+            {
+                if (char.IsNumber(caracter))
+                    return true;
+            }
+            return false;
+        }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
@@ -101,6 +139,11 @@ namespace conexionDB
 
             try
             {
+                //Si se valida que no hay nada seleccionado, se dispara el MessageBox del metodo,
+                //y con el return se corta la ejecucion.
+                if (validarFiltro())
+                    return;
+
                 string campo = cboCampo.SelectedItem.ToString();
                 string criterio = cboCriterio.SelectedItem.ToString();
                 string filtro = txtFiltroAvanzado.Text;
@@ -123,7 +166,8 @@ namespace conexionDB
                 dgvDiscos.DataSource = null;
                 dgvDiscos.DataSource = filtrada;
                 ocultarColumnas();
-            }else if(filtro.Length == 0)
+            }
+            else if (filtro.Length == 0)
             {
                 cargar();
             }
@@ -133,13 +177,14 @@ namespace conexionDB
         {
             string opcion = cboCampo.SelectedItem.ToString();
 
-            if(opcion == "Nro Canciones")
+            if (opcion == "Nro Canciones")
             {
                 cboCriterio.Items.Clear();
                 cboCriterio.Items.Add("Mayor a");
                 cboCriterio.Items.Add("Menor a");
                 cboCriterio.Items.Add("Igual a");
-            }else
+            }
+            else
             {
                 cboCriterio.Items.Clear();
                 cboCriterio.Items.Add("Comienza con");
