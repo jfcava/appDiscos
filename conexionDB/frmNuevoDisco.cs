@@ -17,6 +17,7 @@ namespace conexionDB
     public partial class frmNuevoDisco : Form
     {
         private Disco disco = null;
+        private OpenFileDialog archivo = null;
         public frmNuevoDisco()
         {
             InitializeComponent();
@@ -60,6 +61,10 @@ namespace conexionDB
                     negocio.agregar(disco);
                     MessageBox.Show("Agregado exitosamente.");
                 }
+
+                if (archivo != null && !(txtUrlImagen.Text.ToUpper().Contains("HTTP")));
+                    File.Copy(archivo.FileName, ConfigurationManager.AppSettings["carpeta-imagen"] + archivo.SafeFileName);
+
 
                 Close();
 
@@ -117,8 +122,8 @@ namespace conexionDB
 
         private void btnAgregarImagen_Click(object sender, EventArgs e)
         {
-            OpenFileDialog archivo = new OpenFileDialog();
-            archivo.Filter = "jpg|*.jpg|png|*.png";
+            archivo = new OpenFileDialog();
+            archivo.Filter = "jpg|*.jpg;|png|*.png";
             if(archivo.ShowDialog() == DialogResult.OK)
             {
                 txtUrlImagen.Text = archivo.FileName;
@@ -127,10 +132,11 @@ namespace conexionDB
                 //Guardo la imagen que cargo, y la guardo en otra carpeta.
                 //Para utilizar la clase File se debe usar el using System.IO
 
-                //Para utilizar las configuracion creadas en App.config,
-                //debo agregar la referencia System.Configuration dentro de Assemblies
+                //File.Copy(archivo.FileName, ConfigurationManager.AppSettings["carpeta-imagen"] + archivo.SafeFileName);
+                //ESTO ME LO LLEVO PARA CUANDO HACE CLICK EN Agregar!!
 
-                //File.Copy(archivo.FileName, ConfigurationManager.AppSettings["carpeta-imagen"] + )
+                //Para utilizar las configuracion creadas en App.config, ConfigurationManager.AppSettings["carpeta-imagen"],
+                //debo agregar la referencia System.Configuration dentro de Assemblies
             }
         }
     }

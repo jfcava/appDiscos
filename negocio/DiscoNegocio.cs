@@ -59,7 +59,6 @@ namespace negocio
 
 
         }
-
         public void agregar(Disco nuevo)
         {
             AccesoDatos datos = new AccesoDatos();
@@ -131,7 +130,6 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
-
         public List<Disco> filtrar(string campo, string criterio, string filtro)
         {
             List<Disco> lista = new List<Disco>();
